@@ -83,8 +83,6 @@ class SampleRecordProcessor < Aws::KCLrb::V2::RecordProcessorBase
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  # Start the main processing loop
-  driver = Aws::KCLrb::KCLProcess.new(SampleRecordProcessor.new)
-  driver.run
-end
+# Start the main processing loop
+driver = Aws::KCLrb::KCLProcess.new(SampleRecordProcessor.new)
+driver.run

@@ -2,4 +2,4 @@
 
 >&2 echo "starting sub process"
 
-./sample_kcl.rb
+rails runner ./sample_kcl.rb
