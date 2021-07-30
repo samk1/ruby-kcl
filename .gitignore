@@ -37,3 +37,4 @@ yarn-debug.log*
 
 # Ignore output of maven
 amazon-kinesis-client-multilang/
+target/
