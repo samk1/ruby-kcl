@@ -1,22 +1,4 @@
-#! /usr/bin/env ruby
-# frozen_string_literal: true
-
-#
-#  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#  SPDX-License-Identifier: Apache-2.0
-
-require 'aws/kclrb'
-require 'base64'
-require 'date'
-
-# @api private
-# A sample implementation of the {Aws::KCLrb::RecordProcessorBase RecordProcessor}.
-#
-# All it does is write the data to an output stream. Be careful not to use
-# the `$stdout` as it's used to communicate with the {https://github.com/awslabs/amazon-kinesis-client/blob/master/src/main/java/com/amazonaws/services/kinesis/multilang/package-info.java MultiLangDaemon}.
-# If you use `$stderr` instead the MultiLangDaemon would echo the output
-# to its own standard error stream.
-class SampleRecordProcessor < Aws::KCLrb::V2::RecordProcessorBase
+class RecordProcessor < Aws::KCLrb::V2::RecordProcessorBase
   # (see Aws::KCLrb::V2::RecordProcessorBase#init_processor)
   def init_processor(initialize_input)
     @shard_id = initialize_input.shard_id
@@ -77,12 +59,9 @@ class SampleRecordProcessor < Aws::KCLrb::V2::RecordProcessorBase
              else
                data.length
              end
+    Rails.logger.info(data.to_s)
     warn("ShardId: #{@shard_id}, Partition Key: #{record['partitionKey']}, Sequence Number:#{record['sequenceNumber']}, Length of data: #{length}")
   rescue StandardError => e
     warn "#{e}: Failed to process record '#{record}'"
   end
 end
-
-# Start the main processing loop
-driver = Aws::KCLrb::KCLProcess.new(SampleRecordProcessor.new)
-driver.run
